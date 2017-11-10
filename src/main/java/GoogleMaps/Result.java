@@ -12,6 +12,8 @@ public class Result {
 
     private String place_id;
 
+    private String partial_match;
+
     private String[] types;
 
 
@@ -45,6 +47,14 @@ public class Result {
 
     public void setPlace_id(String place_id) {
         this.place_id = place_id;
+    }
+
+    public String getPartial_match() {
+        return partial_match;
+    }
+
+    public void setPartial_match(String partial_match) {
+        this.partial_match = partial_match;
     }
 
     public String[] getTypes() {
