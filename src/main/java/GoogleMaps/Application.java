@@ -2,6 +2,7 @@ package GoogleMaps;
 
 
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -31,7 +32,7 @@ public class Application {
 
     @RequestMapping("/address")
     @ResponseBody
-    public GoogleResponse retrieveaddress(@RequestParam("address") String address) throws IOException {
+    public Geometry retrieveaddress(@RequestParam("address") String address) throws IOException {
 
         String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDtXgbStTgq9y_0i4QF-4Nw8dAgRa4fvyY";
 
@@ -40,7 +41,10 @@ public class Application {
         String strResult = restTemplate.getForObject(url, String.class);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        GoogleResponse result = objectMapper.readValue(strResult, GoogleResponse.class);
+        JsonNode jNode = objectMapper.readTree(strResult);
+        JsonNode jresult = jNode.get("results").get(0).get("geometry");
+        Geometry result = objectMapper.treeToValue(jresult, Geometry.class);
+        //GoogleResponse result = objectMapper.readValue(strResult, GoogleResponse.class);
 
         return result;
     }
